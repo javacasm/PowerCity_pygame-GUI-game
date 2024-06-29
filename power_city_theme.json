@@ -1,0 +1,16 @@
+{
+    "#health_bar":
+    {
+        "colours": {
+            "filled_bar": "#00AA40D0",
+            "unfilled_bar": "#888888D0"
+        }
+    },
+    "#power_bar":
+    {
+        "colours": {
+            "filled_bar": "#CC1120D0",
+            "unfilled_bar": "#888888D0"
+        }
+    }
+}
