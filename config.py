@@ -1,6 +1,6 @@
 #config
 
-v = 0.36
+v = 0.4
 
 print(f'{__name__} v{v}')
 
@@ -11,7 +11,7 @@ SIZE = (ANCHO_VENTANA, ALTO_VENTANA)
 
 SIZE_IMAGEN = 200
 
-THEME_FILE = 'pygame_gui_examples/data/themes/status_bar_theme.json'
+THEME_FILE = 'power_city_theme.json'
 
 IMAGE_DIR = 'assets/graphics/'
 

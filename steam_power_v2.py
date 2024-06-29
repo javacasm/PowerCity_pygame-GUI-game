@@ -34,10 +34,8 @@ def get_power_percentage():
 
 full_power_label = UILabel(Rect((100,80),(50, 25)),'Power',manager)
 
-progress_bar = UIScreenSpaceHealthBar(Rect((100, 100), (200, 30)),
-                                                 manager)
+full_power_bar = UIScreenSpaceHealthBar(Rect((100, 100), (200, 30)),manager)
     
-
 city_label = UILabel(Rect((20,20),(100, 25)),'Granada',manager)
 
 progress = 0
@@ -59,7 +57,11 @@ while is_running:
                 if event.ui_element == planta.info_button :
                     bFound = True                    
                     planta.create_message_window()
-                    break               
+                    break
+                if event.ui_element == planta.more_control_button:
+                    bFound = True
+                    planta.create_more_control_window()
+                    
             if bFound == False:
                 print(f'button not found {event.ui_element}')
                 
@@ -75,12 +77,10 @@ while is_running:
 
 
     manager.update(time_delta)
-
+    for planta in plantas:
+        planta.update(time_delta)
+        
     time_acc += time_delta
-    progress = (time_acc/10.0)
-    if progress > 1.0:
-        time_acc = 0.0
-    progress_bar.percent_full = progress
 
     window_surface.blit(background, (0, 0))
     manager.draw_ui(window_surface)

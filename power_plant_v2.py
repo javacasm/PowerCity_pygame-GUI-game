@@ -8,8 +8,9 @@ from pygame_gui.windows import UIMessageWindow
 from config import *
 from random import randint
 from utiles import *
+from my_controls import UIPowerBar, UIHealthBar
 
-v = 0.4
+v = 0.5
 
 print(f'{__name__} v{v}')
 
@@ -24,7 +25,7 @@ class PowerPlant_v2:
         self.rect = self.image.get_rect()
         self.rect.topleft = self.position
 
-        self.max_health = 100
+        self.health_capacity = 100
         self.current_health = 100
 
         self.max_power = max_power
@@ -32,6 +33,11 @@ class PowerPlant_v2:
         
         self.add_controls()
 
+    def get_power(self):
+        return randint(0,self.max_power)
+
+    def get_health(self):
+        return randint(0,100)
 
     def add_controls(self):
 
@@ -54,37 +60,36 @@ class PowerPlant_v2:
         espacio_barras = 20
         self.power_plant_label = UILabel(Rect(self.position,(150,25)), self.name, self.ui_manager)
         
-        self.info_button = UIButton(Rect((self.position.x+ancho_barra-25,self.position.y),(25,25)),
-                                    'I',
+        x_button = self.position.x+ancho_barra-25
+        self.info_button = UIButton(Rect((x_button,self.position.y),(25,25)),
+                                    '?',
+                                    self.ui_manager,
+                                    tool_tip_text=self.tooltip,
+                                    object_id='#hover_me_button')
+
+        self.more_control_button = UIButton(Rect((x_button-25,self.position.y),(25,25)),
+                                    '+',
                                     self.ui_manager,
                                     tool_tip_text=self.tooltip,
                                     object_id='#hover_me_button')
 
         
         health_bar_y = self.position.y + 25
-        '''self.health_bar = UIStatusBar(Rect((self.position.x,self.position.y+espacio_barras), (ancho_barra, alto_barra)),
-                  self.ui_manager,
-                  percent_method=self.get_health_percentage,
-                  object_id=ObjectID(
-                         '#health_bar', '@player_status_bars'))
-        '''                 
-        self.health_bar = UIScreenSpaceHealthBar(Rect((self.position.x,self.position.y+espacio_barras), (ancho_barra, alto_barra)),
-                                                 self.ui_manager)
+                
+        self.health_bar = UIHealthBar(Rect((self.position.x,self.position.y+espacio_barras), (ancho_barra, alto_barra)),
+                                                 self.ui_manager,self.get_health)
         image_y = health_bar_y + alto_barra
         self.imageUI = UIImage(Rect((self.position.x,image_y), (self.image.width,self.image.height)),
                                   self.image, self.ui_manager)
         
         power_bar_y = image_y + self.image.get_height()
-        '''
-        self.power_bar = UIStatusBar(Rect((self.position.x, power_bar_y), (ancho_barra, alto_barra)),
-                          self.ui_manager,                                   
-                          percent_method=self.get_power_percentage,
-                          object_id=ObjectID(
-                                 '#mana_bar', '@player_status_bars'))
-        '''
-        self.power_bar = UIScreenSpaceHealthBar(Rect((self.position.x, power_bar_y), (ancho_barra, alto_barra)),
-                                                 self.ui_manager)
-        
+
+        #self.power_bar = UIScreenSpaceHealthBar(Rect((self.position.x, power_bar_y), (ancho_barra, alto_barra)),
+        #                                         self.ui_manager,
+        #                                         sprite_to_monitor = self)
+        self.power_bar = UIPowerBar(Rect((self.position.x, power_bar_y), (ancho_barra, alto_barra)),
+                                                 self.ui_manager,
+                                                 self.get_power,self.max_power)
         
         slider_bar_y = power_bar_y + alto_barra
         
@@ -100,19 +105,17 @@ class PowerPlant_v2:
 
 
     def update(self, time_delta_secs: float) -> None:
-        print('Update')
+        # print('Update')
         self.rect.topleft = (int(self.position.x), int(self.position.y))
-        # update values
+        self.current_health = randint(0,self.health_capacity)
+        self.current_power = randint(0,self.max_power)
         
-        self.power_bar.health_capacity = self.max_power
-        self.power_bar.current_health = self.current_power
-        self.health_bar.health_capacity = self.max_health
-        self.health_bar.current_health = self.current_health
+    def create_more_control_window(self):
+        print('TODO: more controls window')
 
     def create_message_window(self):
         self.message_window = UIMessageWindow(
-            rect=Rect((randint(0, 250),
-                              randint(0, 250)),
+            rect=Rect(self.position,
                              (300, 250)),
             window_title='Test Message Window',
             html_message='<font color=normal_text>'
