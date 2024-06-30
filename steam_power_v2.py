@@ -2,8 +2,7 @@
 import pygame
 
 from pygame_gui import UIManager, UI_BUTTON_PRESSED, UI_HORIZONTAL_SLIDER_MOVED
-from pygame_gui.core import ObjectID
-from pygame_gui.elements import UIStatusBar, UILabel, UIScreenSpaceHealthBar
+from pygame_gui.elements import UILabel, UIScreenSpaceHealthBar
 from power_plant_v2 import PowerPlant_v2
 from pygame import Vector2, Rect
 from config import *

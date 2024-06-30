@@ -1,14 +1,14 @@
 # power_plant
 
-from pygame import Rect, Vector2, image
+from pygame import Rect, image
 
 from pygame_gui.core import ObjectID
-from pygame_gui.elements import UILabel, UIImage, UIStatusBar, UIHorizontalSlider, UIButton, UIScreenSpaceHealthBar
+from pygame_gui.elements import UILabel, UIImage, UIHorizontalSlider, UIButton
 from pygame_gui.windows import UIMessageWindow 
 from config import *
 from random import randint
 from utiles import *
-from my_controls import UIPowerBar, UIHealthBar
+from my_controls import UIPowerBar, UIHealthBar, UIDetailWindow
 
 v = 0.5
 
@@ -53,10 +53,10 @@ class PowerPlant_v2:
         Al hacer click
         '''
         
-        margen = 10
+        # margen = 10
         ancho_barra = self.image.get_rect().width 
         alto_barra = 25
-        base_barras = 0
+        # base_barras = 0
         espacio_barras = 20
         self.power_plant_label = UILabel(Rect(self.position,(150,25)), self.name, self.ui_manager)
         
@@ -98,7 +98,7 @@ class PowerPlant_v2:
                               self.ui_manager,
                               None,
                               click_increment=5)
-        self.slider_label = UILabel(Rect((self.position.x + ancho_barra ,slider_bar_y),(100, 25)),
+        self.slider_label = UILabel(Rect((self.position.x + ancho_barra ,slider_bar_y),(20, 25)),
                                     str(int(self.slider_bar.get_current_value())),
                                     self.ui_manager)
         
@@ -111,12 +111,11 @@ class PowerPlant_v2:
         self.current_power = randint(0,self.max_power)
         
     def create_more_control_window(self):
-        print('TODO: more controls window')
+        self.detail_window = UIDetailWindow(Rect(self.position,(300, 250)),self.ui_manager)
 
     def create_message_window(self):
         self.message_window = UIMessageWindow(
-            rect=Rect(self.position,
-                             (300, 250)),
+            rect=Rect(self.position, (300, 250)),
             window_title='Test Message Window',
             html_message='<font color=normal_text>'
                          'This is a <a href="test">test</a> message to see if '
